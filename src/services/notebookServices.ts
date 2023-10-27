@@ -1,6 +1,7 @@
 import { notes } from "../../data";
 import { Note } from "../Types/interface";
-
+import { dbConnectService } from "./dbConnectServices";
+import sql from 'mssql'
 
 export function getNotes(){
       return notes;
@@ -13,18 +14,45 @@ export function getNotes(){
     }
 
     export async function addNote(note: Note){
-        console.log(`before adding nots is ${notes}`);
-        
-      notes.push(note)
-
-      console.log(`after adding nots is ${notes}`);
-        
-      return notes
+        let { id, title, content,createdAt } = note;
+        let connectionPool = await dbConnectService();
+        let query = `INSERT INTO notes (note_id, title, content,createdAt) VALUES ('${id}', '${title}', '${content}','${createdAt}')`;
+  
+        connectionPool?.connect(async(err)=>{
+          if(err){
+            console.log(err)
+          }else{
+           let results = await  connectionPool?.request()
+                                               .query(query)
+           console.log(results)
+          }
       }
+        )}
       
 
 
           
+        export async function updateNote(note: Note) {
+  const { id, title, content, createdAt } = note;
+  const connectionPool = await dbConnectService();
+
+ 
+    const query = `
+      UPDATE notes 
+      SET title = '${title}', content = '${content}', createdAt = '${createdAt}'
+      WHERE note_id = '${id}'
+    `;
+    connectionPool?.connect(async (err) => {
+      if (err) {
+        console.log(err);
+      } else {
+        const results = await connectionPool?.request().query(query);
+        console.log(results);
+      }
+    });
+  } 
+
+
 
 
       
@@ -39,18 +67,5 @@ export function getNotes(){
       }else{
         notes.splice(indexofNote, 1)
         return indexofNote
-      }
-    }
-
-
-    export function updateNote(id:number, body:Note){
-      let indexOfNote = notes.findIndex((note)=>note.id===id)
-
-      if(indexOfNote>=0){
-        notes[indexOfNote] = body;
-        let success = true
-        return success
-      }else{
-        return false
       }
     }

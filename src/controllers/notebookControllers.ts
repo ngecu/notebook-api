@@ -51,7 +51,7 @@ export function updateNoteController(req:Request, res:Response){
       let parsedID = parseInt(noteID)
       let updatedNote = req.body;
 
-      let result = updateNote(parsedID, updatedNote);
+      let result = updateNote(updatedNote);
       if (result) {
             return res.json({
                   id: parsedID,
