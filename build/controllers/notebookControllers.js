@@ -42,7 +42,7 @@ function updateNoteController(req, res) {
     let { noteID } = req.params;
     let parsedID = parseInt(noteID);
     let updatedNote = req.body;
-    let result = (0, notebookServices_1.updateNote)(parsedID, updatedNote);
+    let result = (0, notebookServices_1.updateNote)(updatedNote);
     if (result) {
         return res.json({
             id: parsedID,

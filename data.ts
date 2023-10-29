@@ -1,4 +1,4 @@
-import { Note } from "./src/Types/interface";
+import { Note } from "./src/types/interface";
 
 export const notes: Note[] = [
     {

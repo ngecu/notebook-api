@@ -1,5 +1,5 @@
 import { notes } from "../../data";
-import { Note } from "../Types/interface";
+import { Note } from "../types/interface";
 import { dbConnectService } from "./dbConnectServices";
 import sql from 'mssql'
 

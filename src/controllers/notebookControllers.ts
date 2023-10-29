@@ -46,19 +46,24 @@ export function addNoteController(req: Request, res:Response){
       })
 }
 
-export function updateNoteController(req:Request, res:Response){
-      let { noteID } = req.params;
-      let parsedID = parseInt(noteID)
+export async function updateNoteController(req: Request, res: Response) {
+      try {
+            let { noteID } = req.params;
+      let parsedID = parseInt(noteID);
       let updatedNote = req.body;
+    
 
-      let result = updateNote(updatedNote);
-      if (result) {
-            return res.json({
-                  id: parsedID,
-                  success: true
-            })
+      await updateNote(updatedNote);
+    
+  
+        return res.json({
+          id: parsedID,
+          success: true,
+        });
+      } catch (error) {
+            res.json(error)
       }
-      return res.json({
-            success: false
-      })
-}
+      
+      
+    }
+    

@@ -9,8 +9,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateNote = exports.deleteNote = exports.addNote = exports.getSpecifNote = exports.getNotes = void 0;
+exports.deleteNote = exports.updateNote = exports.addNote = exports.getSpecifNote = exports.getNotes = void 0;
 const data_1 = require("../../data");
+const dbConnectServices_1 = require("./dbConnectServices");
 function getNotes() {
     return data_1.notes;
 }
@@ -24,13 +25,42 @@ function getSpecifNote(id) {
 exports.getSpecifNote = getSpecifNote;
 function addNote(note) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(`before adding nots is ${data_1.notes}`);
-        data_1.notes.push(note);
-        console.log(`after adding nots is ${data_1.notes}`);
-        return data_1.notes;
+        let { id, title, content, createdAt } = note;
+        let connectionPool = yield (0, dbConnectServices_1.dbConnectService)();
+        let query = `INSERT INTO notes (note_id, title, content,createdAt) VALUES ('${id}', '${title}', '${content}','${createdAt}')`;
+        connectionPool === null || connectionPool === void 0 ? void 0 : connectionPool.connect((err) => __awaiter(this, void 0, void 0, function* () {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                let results = yield (connectionPool === null || connectionPool === void 0 ? void 0 : connectionPool.request().query(query));
+                console.log(results);
+            }
+        }));
     });
 }
 exports.addNote = addNote;
+function updateNote(note) {
+    return __awaiter(this, void 0, void 0, function* () {
+        const { id, title, content, createdAt } = note;
+        const connectionPool = yield (0, dbConnectServices_1.dbConnectService)();
+        const query = `
+      UPDATE notes 
+      SET title = '${title}', content = '${content}', createdAt = '${createdAt}'
+      WHERE note_id = '${id}'
+    `;
+        connectionPool === null || connectionPool === void 0 ? void 0 : connectionPool.connect((err) => __awaiter(this, void 0, void 0, function* () {
+            if (err) {
+                console.log(err);
+            }
+            else {
+                const results = yield (connectionPool === null || connectionPool === void 0 ? void 0 : connectionPool.request().query(query));
+                console.log(results);
+            }
+        }));
+    });
+}
+exports.updateNote = updateNote;
 function deleteNote(id) {
     let indexofNote = data_1.notes.findIndex((note) => note.id === id);
     if (indexofNote < 0) {
@@ -42,15 +72,3 @@ function deleteNote(id) {
     }
 }
 exports.deleteNote = deleteNote;
-function updateNote(id, body) {
-    let indexOfNote = data_1.notes.findIndex((note) => note.id === id);
-    if (indexOfNote >= 0) {
-        data_1.notes[indexOfNote] = body;
-        let success = true;
-        return success;
-    }
-    else {
-        return false;
-    }
-}
-exports.updateNote = updateNote;
