@@ -4,15 +4,19 @@
   "description": "Notebook Api",
   "main": "index.ts",
   "scripts": {
+    "start": "tsc && node build/index.js",
+"dev": "nodemon - exec 'ts-node' index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Dev Ngecu",
   "license": "ISC",
   "dependencies": {
+    "-": "^0.0.1",
     "@types/mssql": "^9.1.2",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
-    "mssql": "^10.0.1"
+    "mssql": "^10.0.1",
+    "save-dev": "^0.0.1-security"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
