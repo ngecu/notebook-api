@@ -3,15 +3,44 @@ import { Note } from "../types/interface";
 import { dbConnectService } from "./dbConnectServices";
 import sql from 'mssql'
 
-export function getNotes(){
-      return notes;
-    }
+export async function getNotes() {
+  try {
+      let connectionPool = await dbConnectService();
+      let query = 'SELECT * FROM notes';
 
-    export function getSpecifNote(id: number){
-      let note = notes.find((note)=>note.id===id)
-      if(note)return note;
-      return null
-    }
+      let results = await connectionPool?.request().query(query);
+      if(results){
+        return results.recordset;
+      }
+      
+  } catch (error) {
+      console.error('Error retrieving notes from the database:', error);
+      throw error; // You can handle or log the error as needed
+  }
+}
+
+
+
+export async function getSpecifNote(id: number) {
+  try {
+      let connectionPool = await dbConnectService();
+      let query = `SELECT * FROM notes WHERE note_id = ${id}`;
+
+      let results = await connectionPool?.request().query(query);
+      if (results) {
+        if (results?.recordset?.length > 0) {
+          return results?.recordset[0];
+      } else {
+          return null;
+      }
+      }
+     
+  } catch (error) {
+      console.error('Error retrieving the specific note from the database:', error);
+      throw error; // You can handle or log the error as needed
+  }
+}
+
 
     export async function addNote(note: Note){
         let { id, title, content,createdAt } = note;

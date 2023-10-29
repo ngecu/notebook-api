@@ -9,7 +9,7 @@ import { addNoteController,
 const noterouter: Router  = Router()
 
 noterouter.get('/', TestingRoute)
-noterouter.get("/", getAllNotesController)
+noterouter.get("/all", getAllNotesController)
 noterouter.get('/:noteID', getSpecificNoteController)
 noterouter.delete("/:noteID", deleteNoteController)
 noterouter.post("/", addNoteController)
