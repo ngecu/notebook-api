@@ -1,1 +1,8 @@
-http://localhost:5000/notes
+POST http://localhost:5000/notes
+Content-Type: application/json
+
+{
+    "title":"I am",
+    "content":"This is content body",
+    "createdAt":"1127"
+}

@@ -1,6 +1,6 @@
 // import express from 'express';
 const express = require('express')
-import noterouter from './src/routes/notebookRoutes';
+import noterouter from './routes/notebookRoutes';
 
 
 
