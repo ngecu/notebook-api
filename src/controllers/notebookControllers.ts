@@ -111,31 +111,29 @@ export async function getAllNotes(req:Request, res:Response) {
               
     
     
+              export const deleteNote = async (req: Request, res: Response) => {
+                  const note_id = req.params.note_id;
+              
+                  try {
+                      // Check if the note exists before attempting the delete
+                      const checkNoteQuery = `SELECT * FROM notes WHERE note_id = '${note_id}'`;
+              
+                      const pool = await mssql.connect(sqlConfig);
+                      const checkResult = await pool.request().query(checkNoteQuery);
+              
+                      if (checkResult.recordset.length === 0) {
+                          return res.status(404).json({ error: 'Note not found' });
+                      }
+              
+                      // Delete the note
+                      const deleteQuery = `DELETE FROM notes WHERE note_id = '${note_id}'`;
+              
+                      const deleteResult = await pool.request().query(deleteQuery);
+              
+                      return res.status(200).json({ message: 'Note deleted successfully' });
+                  } catch (error) {
+                      console.error(error);
+                      return res.status(500).json({ error: 'An error occurred while deleting the note' });
+                  }
+              };
     
-    
-          
-    
-        
-    
-        export async function deleteNote(req: Request, res: Response){
-            const note_id = req.params.note_id;
-
-            try {
-                const checkNoteQuery = `SELECT * FROM notes WHERE note_id = '${note_id}'`;
-                
-                const pool = await mssql.connect(sqlConfig);
-                const result = await pool.request().query(checkNoteQuery);
-        
-                if (result.recordset.length === 0) {
-                    return res.status(404).json({ error: 'Note not found' });
-                }
-        
-                const deleteQuery = `DELETE FROM notes WHERE note_id = '${note_id}'`;
-                await pool.request().query(deleteQuery);
-        
-                return res.status(200).json({ message: 'Note deleted successfully' });
-            } catch (error) {
-                console.error(error);
-                return res.status(500).json({ error: 'An error occurred while deleting the note' });
-            }
-        }

@@ -1,19 +1,15 @@
 import { Router, Request, Response } from "express";
-import { addNoteController, 
-    TestingRoute,
-         deleteNoteController,
-         getAllNotesController,
-         getSpecificNoteController,
-         updateNoteController, } from "../controllers/notebookControllers";
+import { addNote, deleteNote, getAllNotes, getSpecifNote, TestingRoute, updateNote } from "../controllers/notebookControllers";
+
 
 const noterouter: Router  = Router()
 
 noterouter.get('/', TestingRoute)
-noterouter.get("/all", getAllNotesController)
-noterouter.get('/:noteID', getSpecificNoteController)
-noterouter.delete("/:noteID", deleteNoteController)
-noterouter.post("/", addNoteController)
-noterouter.put("/:noteID", updateNoteController)
+noterouter.get("/all", getAllNotes)
+noterouter.get('/:note_id', getSpecifNote)
+noterouter.delete("/:note_id", deleteNote)
+noterouter.post("/", addNote)
+noterouter.put("/:note_id", updateNote)
 
 
 
